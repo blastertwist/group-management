@@ -314,7 +314,7 @@ app.get("/get-request-join-group", tokenVerifier, async (req, res) => {
                             include: [
                                 {
                                     model: UserProfile,
-                                    attributes: ['firstName', 'lastName'],
+                                    attributes: ['firstName', 'lastName', 'biograph', 'major'],
                                     as: 'profile'
                                 }
                             ]

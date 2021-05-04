@@ -9,13 +9,14 @@ import colors from '../../../assets/colors/colors'
 //Redux
 import { connect, useDispatch } from 'react-redux'
 import { acceptJoinGroupAction, declineJoinGroupAction } from '../../redux/slices/groupSlices'
-import { color } from 'react-native-reanimated'
 
-const Req = ({ id, firstName, lastName, approved, confirm, studentId }) => {
+const Req = ({ id, firstName, lastName, approved, confirm, studentId, clickedUser }) => {
     const dispatch = useDispatch()
 
     return (
-        <View style={styles.container}>
+        <TouchableOpacity
+            onPress={() => { clickedUser() }}
+            style={styles.container}>
             <View style={styles.card}>
                 <View>
                     <Text style={styles.textName}>{firstName} {lastName}</Text>
@@ -42,7 +43,7 @@ const Req = ({ id, firstName, lastName, approved, confirm, studentId }) => {
                 }
 
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 
