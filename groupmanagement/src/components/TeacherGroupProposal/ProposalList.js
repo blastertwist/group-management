@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import { acceptGroupProposalAction, declineGroupProposalAction } from '../../redux/slices/groupSlices'
 import { connect, useDispatch } from 'react-redux'
 
-const ProposalList = ({ groupProposalList, groupList }) => {
+const ProposalList = ({ groupProposalList, groupList, socket }) => {
     const dispatch = useDispatch()
     const navigation = useNavigation()
     const [feedback, setFeedback] = useState("")
@@ -179,7 +179,7 @@ const ProposalList = ({ groupProposalList, groupList }) => {
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        dispatch(declineGroupProposalAction(clickedProposal.id))
+                                        dispatch(declineGroupProposalAction(clickedProposal.id, feedback, clickedProposal.Members, socket))
                                         setProposalClicked(false)
                                     }}
                                     style={{
@@ -195,7 +195,7 @@ const ProposalList = ({ groupProposalList, groupList }) => {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={() => {
-                                        dispatch(acceptGroupProposalAction(clickedProposal.id))
+                                        dispatch(acceptGroupProposalAction(clickedProposal.id, feedback, clickedProposal.Members, socket))
                                         setProposalClicked(false)
                                     }}
                                     style={{

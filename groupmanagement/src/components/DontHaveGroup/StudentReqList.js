@@ -6,7 +6,7 @@ import colors from '../../../assets/colors/colors';
 import { connect, useDispatch } from 'react-redux'
 import { confirmJoinAction, cancelJoinAction } from '../../redux/slices/groupSlices'
 
-const StudentReqList = ({ ownJoinReq, groupList }) => {
+const StudentReqList = ({ ownJoinReq, groupList, socket }) => {
     const dispatch = useDispatch()
     const renderItem = ({ item }) => {
         const group = groupList.find(x => x.id == item.groupId)
@@ -36,7 +36,7 @@ const StudentReqList = ({ ownJoinReq, groupList }) => {
                     {item.approved == true ?
                         item.confirm == true || item.confirm == false ? null :
                             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                <TouchableOpacity onPress={() => dispatch(confirmJoinAction(item.id))}
+                                <TouchableOpacity onPress={() => dispatch(confirmJoinAction(item.id, socket))}
                                     style={styles.joinBox}>
                                     <Text style={styles.textRegular}>JOIN</Text>
                                 </TouchableOpacity>

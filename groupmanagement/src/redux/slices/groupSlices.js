@@ -275,21 +275,26 @@ export const leaveGroupAction = () => {
     }
 }
 
-export const acceptJoinGroupAction = (id) => {
-    return async dispatch => {
+export const acceptJoinGroupAction = (id, userId, socket) => {
+    return async (dispatch, getState) => {
         try {
-            const res = await axios.patch("/group/accept-join-group", { joinId: id })
-            dispatch(setAcceptJoinGroupReq(id))
+            const { auth, group } = getState();
+            socket.current.emit("notification:accept-join-group", { sndrId: auth.user.id, recvId: userId, type: "ACCEPT_JOIN_GROUP", msg: `You are accepted to join group ${group.ownGroup.name}` })
+            //const res = await axios.patch("/group/accept-join-group", { joinId: id })
+            //dispatch(setAcceptJoinGroupReq(id))
             alert('Successfully accept student to join the group!')
         } catch (err) {
-            alert(err.response.data.MESSAGE)
+            console.log(err)
+            //alert(err.response.data.MESSAGE)
         }
     }
 }
 
-export const declineJoinGroupAction = (id) => {
-    return async dispatch => {
+export const declineJoinGroupAction = (id, userId, socket) => {
+    return async (dispatch, getState) => {
         try {
+            const { auth, group } = getState();
+            socket.current.emit("notification:decline-join-group", { sndrId: auth.user.id, recvId: userId, type: "DECLINE_JOIN_GROUP", msg: `You are declined to join group ${group.ownGroup.name}` })
             const res = await axios.post("/group/decline-join-group", { joinId: id })
             dispatch(setDeclineJoinGroupReq(id))
             alert('Successfully decline join group!')
@@ -356,9 +361,11 @@ export const getGroupProposalAction = () => {
     }
 }
 
-export const acceptGroupProposalAction = (groupId, feedback) => {
-    return async dispatch => {
+export const acceptGroupProposalAction = (groupId, feedback, members, socket) => {
+    return async (dispatch, getState) => {
         try {
+            const { auth } = getState();
+            socket.current.emit("notification:accept-group-proposal", { sndrId: auth.user.id, recvId: members, type: "ACCEPT_GROUP_PROPOSAL", msg: "Group proposal accepted, please check the feedback!" })
             const res = await axios.patch("/group/approve-group-proposal", { groupId, approval: "ACCEPT", feedback })
             if (res.data.STATUS == "APPROVAL_GROUP_PROPOSAL_SUCCESS") {
                 dispatch(acceptProposal({ id: groupId, feedback }))
@@ -371,11 +378,12 @@ export const acceptGroupProposalAction = (groupId, feedback) => {
 }
 
 export const declineGroupProposalAction = (groupId, feedback) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
         try {
+            const { auth } = getState();
+            socket.current.emit("notification:decline-group-proposal", { sndrId: auth.user.id, recvId: members, type: "DECLINE_GROUP_PROPOSAL", msg: "Group proposal declined, please check the feedback!" })
             const res = await axios.patch("/group/approve-group-proposal", { groupId, approval: "DECLINE", feedback })
             if (res.data.STATUS == "APPROVAL_GROUP_PROPOSAL_SUCCESS") {
-                console.log("DECLINED SUCCESS")
                 dispatch(declineProposal({ id: groupId, feedback }))
                 alert(res.data.MESSAGE)
             }

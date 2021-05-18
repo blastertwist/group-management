@@ -16,7 +16,7 @@ const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
-const TeacherMsgScreen = ({ proposalList }) => {
+const TeacherMsgScreen = ({ proposalList, socket }) => {
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(getGroupProposalAction())
@@ -44,7 +44,7 @@ const TeacherMsgScreen = ({ proposalList }) => {
                     fontSize: normalize(20)
                 }}>GROUP PROPOSALS</Text>
             </View>
-            <ProposalList groupProposalList={proposalList} />
+            <ProposalList groupProposalList={proposalList} socket={socket} />
         </ScrollView>
     )
 }

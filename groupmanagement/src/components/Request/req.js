@@ -10,7 +10,7 @@ import colors from '../../../assets/colors/colors'
 import { connect, useDispatch } from 'react-redux'
 import { acceptJoinGroupAction, declineJoinGroupAction } from '../../redux/slices/groupSlices'
 
-const Req = ({ id, firstName, lastName, approved, confirm, studentId, clickedUser }) => {
+const Req = ({ id, userId, firstName, lastName, approved, confirm, studentId, clickedUser, socket }) => {
     const dispatch = useDispatch()
 
     return (
@@ -25,11 +25,11 @@ const Req = ({ id, firstName, lastName, approved, confirm, studentId, clickedUse
                 </View>
                 {approved == null ?
                     <View>
-                        <TouchableOpacity onPress={() => dispatch(acceptJoinGroupAction(id))}
+                        <TouchableOpacity onPress={() => dispatch(acceptJoinGroupAction(id, userId, socket))}
                             style={styles.acceptBtn}>
                             <Text style={styles.textAccept}>Accept</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => dispatch(declineJoinGroupAction(id))}
+                        <TouchableOpacity onPress={() => dispatch(declineJoinGroupAction(id, userId, socket))}
                             style={styles.declineBtn}>
                             <Text style={styles.textDecline}>Decline</Text>
                         </TouchableOpacity>

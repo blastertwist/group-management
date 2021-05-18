@@ -17,7 +17,7 @@ import {
 } from '../../redux/slices/groupSlices'
 
 //passing
-const ReqList = ({ joinList, owner }) => {
+const ReqList = ({ joinList, owner, socket }) => {
     const dispatch = useDispatch()
 
     const [visible, setVisible] = useState(false);
@@ -27,17 +27,19 @@ const ReqList = ({ joinList, owner }) => {
     useEffect(() => {
         dispatch(getJoinGroupReqAction())
     }, [])
-    const [clickedUser, setClickedUser] = useState({});
+    const [clickedUser, setClickedUser] = useState({ applicant: { profile: {} } });
     const renderItemR = ({ item }) => {
 
         return <Req
             key={item.id}
             id={item.id}
+            userId={item.userId}
             firstName={item.applicant.profile.firstName}
             lastName={item.applicant.profile.lastName}
             studentId={item.applicant.studentId}
             approved={item.approved}
             confirm={item.confirm}
+            socket={socket}
             clickedUser={() => {
                 setClickedUser(item)
                 showDialog()

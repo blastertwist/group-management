@@ -25,7 +25,7 @@ const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
 }
 
-const StudentMsgScreen = ({ user, ownGroup, ownJoinRequest }) => {
+const StudentMsgScreen = ({ user, ownGroup, ownJoinRequest, socket }) => {
     const dispatch = useDispatch()
     const [focusOn, setFocusOn] = useState("GROUP PROPOSAL")
 
@@ -95,13 +95,13 @@ const StudentMsgScreen = ({ user, ownGroup, ownJoinRequest }) => {
                 :
                 user.groupId == null ?
                     ownJoinRequest.length != null ?
-                        <StudentReqList ownJoinReq={ownJoinRequest} />
+                        <StudentReqList ownJoinReq={ownJoinRequest} socket={socket} />
                         : <DontHaveGroup />
                     :
                     ownGroup.ownerId == user.id ?
-                        <ReqList owner={true} />
+                        <ReqList owner={true} socket={socket} />
                         :
-                        <ReqList owner={false} />
+                        <ReqList owner={false} socket={socket} />
             }
         </ScrollView>
     )
